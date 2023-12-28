@@ -1,11 +1,11 @@
 %==========================================================================
 % OceanData 
-%   UHSLC : an example to deal with the UHSLC dataset 
+%   IOC : an example to deal with the IOC dataset 
 %
-%   Link: https://uhslc.soest.hawaii.edu/data/
+%   Link: http://www.ioc-sealevelmonitoring.org
 %
 % Siqi Li, SMAST
-% 2023-12-20
+% 2023-12-26
 %
 % Updates:
 %
@@ -14,23 +14,22 @@ clc
 clear
 
 %------------------------------Settings------------------------------------
-outdir = '../data/';
+outdir = './';
 tlims = [datenum(2023,10,1) datenum(2023,12,7)];
-xlims = [-180 180];
-ylims = [-90 90];
+xlims = [0 5];
+ylims = [35 40];
 %--------------------------------------------------------------------------
 
 % Get the data information
-info = UHSLC_info('xlims', xlims, 'ylims', ylims);
-ID = [info.id];
+info = IOC_info('xlims', xlims, 'ylims', ylims);
+ID = [info.id]';
 
 % Download the data
-UHSLC_download(ID, outdir);
+ID_avail = IOC_download(ID, outdir, tlims);
 
 % Create the file list
-fins = arrayfun(@(x) [outdir '/UHSLC_zeta_' convertStringsToChars(x) '.nc'], ID, 'UniformOutput', false);
+fins = arrayfun(@(x) [x.folder '\' x.name], dir([outdir '/*.nc']), 'UniformOutput', false);
 
 % Read the data
-out = UHSLC_read(fins, 'tlims', tlims, 'Clean');
-
+sta = IOC_read(fins, 'tlims', tlims, 'Clean');
 

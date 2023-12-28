@@ -1,8 +1,8 @@
 %==========================================================================
 % OceanData 
-%   UHSLC : read elevation data
+%   IOC : archive one station data
 %
-%   Link: https://uhslc.soest.hawaii.edu/data/
+%   Link: http://www.ioc-sealevelmonitoring.org
 %
 % input  :
 %   fin     --- NetCDF filename (char or string)
@@ -22,13 +22,13 @@
 % Updates:
 %
 %==========================================================================
-function out = UHSLC_read(source, varargin)
+function out = IOC_read(source, varargin)
 
 varargin = read_varargin(varargin, {'tlims'}, {[]});
 varargin = read_varargin2(varargin, {'Clean'});
 
 
-disp('----- UHSLC read -----')
+disp('----- IOC read -----')
 
 if ischar(source)
     source = convertCharsToStrings(source);
@@ -53,15 +53,15 @@ for i = 1 : n
 
     lon = calc_lon_180(ncread(fin, 'lon'));
     lat = ncread(fin, 'lat');
-    id = convertCharsToStrings(num2str(ncread(fin, 'uhslc_id'), '%3.3d'));
-    descr = convertCharsToStrings([ncread(fin, 'station_name')' ', ' ncread(fin, 'station_country')']);
+    id = strtrim(convertCharsToStrings(strtrim(ncread(fin, 'id'))));
+    descr = strtrim(convertCharsToStrings(strtrim(ncread(fin, 'location'))));
     time = ncread(fin, 'time') + datenum(1800, 1, 1);
-    zeta = ncread(fin, 'sea_level') / 1000;
+    zeta = ncread(fin, 'zeta');
 
-    % Remove the NaN
-    j = find(~isnan(zeta));
-    time = time(j);
-    zeta = zeta(j);
+    % % Remove the NaN
+    % j = find(~isnan(zeta));
+    % time = time(j);
+    % zeta = zeta(j);
     
     % Set the time limits
     if ~isempty(tlims)

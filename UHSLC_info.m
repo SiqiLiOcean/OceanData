@@ -12,7 +12,9 @@
 %
 % output :
 %   info   --- struct containing data
-%              id    --- UHSLC ID
+%              id    --- station ID
+%              lon   --- longitude
+%              lat   --- latitude
 %              descr --- starting time (yyyy-mm-dd)
 %              t1    --- date and time (datenum)
 %
@@ -29,7 +31,7 @@ varargin = read_varargin(varargin, {'ylims'}, {[-90 90]});
 varargin = read_varargin(varargin, {'Poly'}, {[xlims([1 2 2 1 1])' ylims([1 1 2 2 1])']});
 
 
-xlims = mod(xlims+180, 360) - 180;
+xlims = calc_lon_180(xlims);
 
 disp('----- UHSLC information -----')
 
@@ -51,6 +53,7 @@ for i = 1 : height(info0)
         continue
     end
 
+    disp(['----' num2str(info0.Var1(i), '%3.3d')])
     j = j + 1;
     info(j,1).id = convertCharsToStrings(num2str(info0.Var1(i), '%3.3d'));
     info(j,1).lon = lon;
