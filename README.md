@@ -1,2 +1,2 @@
 # OceanData
-A MATLAB toolbox to deal with famous ocean datasets
+A MATLAB toolbox to deal with popular ocean datasets
