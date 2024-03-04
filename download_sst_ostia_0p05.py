@@ -29,8 +29,8 @@ from datetime import datetime, timedelta
 import copernicusmarine
 
 # Settings
-user = "sli12"
-pswd = "123qweASDF"
+user = ""
+pswd = ""
 output_directory = './'
 
 prefix = "SST_PSTIA_0p05"
