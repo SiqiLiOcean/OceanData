@@ -1,5 +1,5 @@
 """
-This script downloads data from the Copernicus Marine Environment
+This script downloads SSH data from the Copernicus Marine Environment
 Monitoring Service (CMEMS) for a specified date range. The script uses
 the Copernicus Marine Python library to access the data.
 
