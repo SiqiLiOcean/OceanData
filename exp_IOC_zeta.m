@@ -28,7 +28,7 @@ ID = [info.id]';
 ID_avail = IOC_download(ID, outdir, tlims);
 
 % Create the file list
-fins = arrayfun(@(x) [x.folder '\' x.name], dir([outdir '/*.nc']), 'UniformOutput', false);
+fins = arrayfun(@(x) [x.folder filesep x.name], dir([outdir filesep '*.nc']), 'UniformOutput', false);
 
 % Read the data
 sta = IOC_read(fins, 'tlims', tlims, 'Clean');

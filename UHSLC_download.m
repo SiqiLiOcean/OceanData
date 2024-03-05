@@ -35,7 +35,7 @@ n = length(ID);
 
 for i = 1 : n
     url = [url0 'h' num2str(ID{i}, '%3.3d') '.nc'];
-    fout = [outdir '/UHSLC_zeta_' ID{i} '.nc'];
+    fout = [outdir pathsep 'UHSLC_zeta_' ID{i} '.nc'];
     [~, status] = urlread(url);
     if status
         disp(url)

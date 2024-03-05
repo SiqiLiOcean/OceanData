@@ -1,6 +1,6 @@
 %==========================================================================
 % OceanData 
-%   IOC : archive one station data
+%   IOC : read data
 %
 %   Link: http://www.ioc-sealevelmonitoring.org
 %
