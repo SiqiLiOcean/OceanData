@@ -29,8 +29,8 @@ from datetime import datetime, timedelta
 import copernicusmarine
 
 # Settings
-user = ""
-pswd = ""
+user = "sli12"
+pswd = "123qweASDF"
 output_directory = './'
 
 prefix = "SSH_NRT_0p25"
@@ -74,13 +74,12 @@ elif len(sys.argv) == 2:
     end_date = start_date
 elif len(sys.argv) == 1:
     current_date = datetime.now()
-    today = current_date.strftime("%Y%m%d")
     start_date = current_date
     end_date = current_date
 else:
     print("Invalid input format.")
     print(USAGE)
-    sys.exit(1)
+    sys.exit()
 
 
 def download_data(user, pswd, dataset_id, prefix, date_str, output_directory="./"):

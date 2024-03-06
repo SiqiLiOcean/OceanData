@@ -1,22 +1,25 @@
 """
-This script downloads SST data from the Copernicus Marine Environment
+This script downloads SSH data from the Copernicus Marine Environment
 Monitoring Service (CMEMS) for a specified date range. The script uses
 the Copernicus Marine Python library to access the data.
 
 https://marine.copernicus.eu
-https://doi.org/10.48670/moi-00165
+https://data.marine.copernicus.eu/product/MULTIOBS_GLO_PHY_SSS_L4_MY_015_015/description
+https://doi.org/10.1175/JTECH-D-20-0093.1
 https://pypi.org/project/copernicusmarine/
 
-resolution: 0.05 x 0.05
-time interval: daily
+resolution: 0.25 x 0.25
+time interval: weekly
 format: NetCDF
+start: 2010-12-27
 
-The Operational Sea Surface Temperature and Ice Analysis (OSTIA) 
-system is run by the UK's Met Office and delivered by IFREMER PU. 
-OSTIA uses satellite data provided by the GHRSST project together 
-with in-situ observations to determine the sea surface temperature. 
-A high resolution (1/20° - approx. 6 km) daily analysis of sea surface 
-temperature (SST) is produced for the global ocean and some lakes.
+The product MULTIOBS_GLO_PHY_SSS_L4_MY_015_015 is a reformatting and a
+simplified version of the CATDS L4 product called “SMOS-OI”. This product
+is obtained using optimal interpolation (OI) algorithm, that combine,
+ISAS in situ SSS OI analyses (Copernicus Marine Service products
+INSITU_GLO_PHY_TS_OA_NRT_013_002 and INSITU_GLO_PHY_TS_OA_MY_013_052) to
+reduce large scale and temporal variable bias and Soil Moisture Ocean
+Salinity (SMOS) satellite image with satellite SST information.
 
 Siqi Li, SMAST
 2024-03-04
@@ -33,17 +36,16 @@ user = "sli12"
 pswd = "123qweASDF"
 output_directory = './'
 
-prefix = "SST_PSTIA_0p05"
+prefix = "SSS_SMOS-OI_0p25"
 
 # Dataset information
-# Starting from 2007-01-01
-dataset_id = "METOFFICE-GLO-SST-L4-NRT-OBS-SST-V2"
+dataset_id = "cmems_obs-mob_glo_phy-sss_my_multi-oi_P1W"
 
 # Usage instructions
 USAGE = """
-Usage: python download_sst_data.py [start_date] [end_date]
-       python download_sst_data.py [date]
-       python download_sst_data.py
+Usage: python download_sss_data.py [start_date] [end_date]
+       python download_sss_data.py [date]
+       python download_sss_data.py
 
 Arguments:
   start_date    Start date in yyyymmdd format
@@ -51,7 +53,7 @@ Arguments:
   date          Single date in yyyymmdd format (optional, defaults to current date)
 
 Example:
-  python download_sst_data.py 20240101 20240105
+  python download_sss_data.py 20220101 20220105
 """
 
 # Parse command-line arguments
@@ -62,17 +64,21 @@ elif len(sys.argv) == 2:
     start_date = datetime.strptime(sys.argv[1], "%Y%m%d")
     end_date = start_date
 elif len(sys.argv) == 1:
-    start_date = datetime.now() 
-    end_date = datetime.now()
+    current_date = datetime.now()
+    start_date = current_date
+    end_date = current_date
 else:
     print("Invalid input format.")
     print(USAGE)
     sys.exit()
 
+# Modify the starting and ending time
+start_date -= timedelta(days = start_date.weekday())
+end_date   -= timedelta(days = end_date.weekday())
 
 def download_data(user, pswd, dataset_id, prefix, date_str, output_directory="./"):
     # Define date range
-    date_range = f"*/{date_str[:4]}/{date_str[4:6]}/{date_str}*.nc"
+    date_range = f"*/{date_str[:4]}/*_{date_str}T000000_*.nc"
 
     # Call the get function for each dataset to save files for the date range
     download_file = copernicusmarine.get(
@@ -95,6 +101,7 @@ def download_data(user, pswd, dataset_id, prefix, date_str, output_directory="./
 
 
 current_date = start_date
+print(current_date.strftime('%Y%m%d'))
 while current_date <= end_date:
     # Format the date in yyyymmdd
     formatted_date = current_date.strftime('%Y%m%d')
@@ -106,5 +113,5 @@ while current_date <= end_date:
     print()
 
     # Advance the day
-    current_date += timedelta(days=1)
+    current_date += timedelta(days = 7)
 
