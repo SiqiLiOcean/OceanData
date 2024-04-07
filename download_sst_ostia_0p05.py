@@ -33,7 +33,7 @@ user = "sli12"
 pswd = "123qweASDF"
 output_directory = './'
 
-prefix = "SST_PSTIA_0p05"
+prefix = "SST_OSTIA_0p05"
 
 # Dataset information
 # Starting from 2007-01-01
