@@ -32,8 +32,8 @@ from datetime import datetime, timedelta
 import copernicusmarine
 
 # Settings
-user = "sli12"
-pswd = "123qweASDF"
+user = "***"
+pswd = "***"
 output_directory = './'
 
 prefix = "SSS_SMOS-OI_0p25"
