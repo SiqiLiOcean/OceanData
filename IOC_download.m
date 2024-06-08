@@ -15,6 +15,8 @@
 %
 % Updates:
 %
+% 2024-05-08 ChenYu Zhang  Changed webread to readtable, as there's empty 
+%                          at table causing len(time) ~= len(zeta).
 %==========================================================================
 function ID_out = IOC_download(ID, outdir, tlims)
 
@@ -46,14 +48,24 @@ for i = 1 : n
     while t < t2
         t = t + nday;
         url = [url0 'code=' ID{i} '&output=tab&period=' num2str(nday) '&endtime=' datestr(t,'yyyy-mm-dd')];
-        txt = webread(url);
+        % txt = webread(url);
+        % 
+        % if contains(txt, 'NO DATA')
+        %     continue
+        % end
+        % 
+        % match1 = datenum(regexp(txt, pattern1, 'match')', 'yyyy-mm-dd HH:MM:SS');
+        % match2 = str2double(regexp(txt, pattern2, 'match')');
 
-        if contains(txt, 'NO DATA')
-            continue
+        try
+            table = readtable(url,'FileType','html');
+        catch ME1
+            if (strcmp(ME1.identifier,'MATLAB:io:html:detection:NoTablesFound'))
+                continue
+            end
         end
-
-        match1 = datenum(regexp(txt, pattern1, 'match')', 'yyyy-mm-dd HH:MM:SS');
-        match2 = str2double(regexp(txt, pattern2, 'match')');
+        match1 = datenum(table(:,1).Variables);
+        match2 = table(:,end).Variables;
         time0 = [time0; match1];
         zeta0 = [zeta0; match2];
     end

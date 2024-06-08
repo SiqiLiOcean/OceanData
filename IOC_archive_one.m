@@ -20,14 +20,14 @@ function IOC_archive_one(fout, sta)
 
 nt = length(sta.time);
 IDStrLen = 7;
-LocationStrLen = 30;
+LocationStrLen = 50;
 
 ncid = netcdf.create(fout, 'CLOBBER');
 
 station_dimid = netcdf.defDim(ncid, 'station', 1);
 time_dimid = netcdf.defDim(ncid, 'time', nt);
 IDStrLen_dimid = netcdf.defDim(ncid, 'IDStrLen', 7);
-LocationStrLen_dimid = netcdf.defDim(ncid, 'LocationStrLen', 30);
+LocationStrLen_dimid = netcdf.defDim(ncid, 'LocationStrLen', LocationStrLen);
 
 
 id_varid = netcdf.defVar(ncid, 'id', 'char', [IDStrLen_dimid station_dimid]);
