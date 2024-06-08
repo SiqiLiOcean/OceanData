@@ -30,8 +30,8 @@ from datetime import datetime, timedelta
 import copernicusmarine
 
 # Settings
-user = "sli12"
-pswd = "123qweASDF"
+user = "***"
+pswd = "***"
 output_directory = './'
 
 prefix = "SWH_NRT_2p00"
